@@ -9,4 +9,35 @@ repositories {
     mavenCentral()
 }
 
-dependencies { }
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(':engine_core')
+    compile project(':dsl_core')
+    // https://mvnrepository.com/artifact/commons-cli/commons-cli
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "Gradle",
+                "Main-Class" : "pt.isel.ngspipes.engine_app.App",
+                "Implementation-Version": version)
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
+def engineProjects = [':dsl',':engine']
+task engineJar( type: Jar , dependsOn: engineProjects.collect{ it+":compileJava"}) {
+    baseName = 'build/engine-1.0'
+    from files(engineProjects.collect{ project(it).sourceSets.main.output })
+    from('engine/engine_app/src/main/java/') {
+        include 'resources/'
+    }
+    manifest {
+        attributes 'Main-Class': 'pt.isel.ngspipes.engine_app.App'
+    }
+}
