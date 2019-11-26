@@ -1,0 +1,66 @@
+Properties: {
+    author: "NGSPipes Team"
+    description: "Study case split and merge"
+    version:  "1.0"
+}
+
+Repositories: [
+    ToolRepository repo: {
+        location: "https://github.com/ngspipes2/tools_support"
+	config: {
+		username: "NGSPipesShare"
+		token: "4104311fb1a5db310b2eed6f765a168355d7cbd8"
+	}
+    }
+]
+
+Outputs: {
+    output1: merge[output]
+}
+
+Steps: [
+    Step split: {
+        exec: repo[Split_Merge][split]
+        execution_context: "DockerConfig"
+        inputs: {
+            path: "C:\Users\caf\Documents\DEVELOPMENT\NGSPipes\inputs\proteins.fa"
+            type: "split"
+            skipLines: 1
+            fileExtension: ".fa"
+            filePrefix: "seq"
+        }
+    }
+    Step makeblastdb: {
+        exec: repo[Blast][makeblastdb]
+        execution_context: "DockerConfig"
+        inputs: {
+            dbtype: "prot"
+            out: "allrefs"
+            title: "allrefs"
+            in: "C:\Users\caf\Documents\DEVELOPMENT\NGSPipes\inputs\allrefs.fna.pro"
+        }
+    }
+    Step blastx: {
+        exec: repo[Blast][blastx]
+        execution_context: "DockerConfig"
+        inputs: {
+            db: makeblastdb[outFileName]
+            query: split[outputs]
+            out: "blast.out"
+        }
+        spread: {
+            inputs_to_spread: [query]
+        }
+    }
+    Step merge: {
+        exec: repo[Split_Merge][mergeFiles]
+        execution_context: "DockerConfig"
+        inputs: {
+            files: blastx[outFile]
+            type: "mergefiles"
+            fileExtension: ".fa"
+            filePrefix: "merged"
+        }
+    }
+
+] 

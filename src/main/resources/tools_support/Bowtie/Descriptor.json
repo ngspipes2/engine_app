@@ -1,0 +1,97 @@
+{
+
+  "name": "Bowtie2",
+
+  "author": "Johns Hopkins University",
+
+  "version": "2.2.3",
+
+  "description": "Bowtie 2 is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1,000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. Bowtie 2 indexes the genome with an FM Index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2 GB. Bowtie 2 supports gapped, local, and paired-end alignment modes.",
+
+  "documentation": [
+
+    "http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml"
+
+  ],
+
+  "commands": [
+
+    {
+
+      "name": "bowtie2Build",
+
+      "command": "bowtie2-build",
+
+      "description": "bowtie2-build builds a Bowtie index from a set of DNA sequences. bowtie2-build outputs a set of 6 files with suffixes .1.bt2, .2.bt2, .3.bt2, .4.bt2, .rev.1.bt2, and .rev.2.bt2. In the case of a large index these suffixes will have a bt2l termination. These files together constitute the index: they are all that is needed to align reads to that reference. The original sequence FASTA files are no longer used by Bowtie 2 once the index is built.\\n Bowtie 2's .bt2 index format is different from Bowtie 1's .ebwt format, and they are not compatible with each other.\\n Use of Karkkainen's blockwise algorithm allows bowtie2-build to trade off between running time and memory usage. bowtie2-build has three options governing how it makes this trade: -p/--packed, --bmax/--bmaxdivn, and --dcv. By default, bowtie2-build will automatically search for the settings that yield the best running time without exhausting memory. This behavior can be disabled using the -a/--noauto option.\\n The indexer provides options pertaining to the 'shape' of the index, e.g. --offrate governs the fraction of Burrows-Wheeler rows that are 'marked' (i.e., the density of the suffix-array sample; see the original FM Index paper for details). All of these options are potentially profitable trade-offs depending on the application. They have been set to defaults that are reasonable for most cases according to our experiments. See Performance tuning for details.\\n bowtie2-build can generate either small or large indexes. The wrapper will decide which based on the length of the input genome. If the reference does not exceed 4 billion characters but a large index is preferred, the user can specify --large-index to force bowtie2-build to build a large index instead.\\n The Bowtie 2 index is based on the FM Index of Ferragina and Manzini, which in turn is based on the Burrows-Wheeler transform. The algorithm used to build the index is based on the blockwise algorithm of Karkkainen.",
+
+      "recommended_mem": 2048,
+
+      "recommended_cpu" : 1,
+
+      "recommended_disk" : 1024,
+
+      "parameters": [
+
+        {
+
+          "name": "f",
+
+          "type": "flag",
+
+          "required": "false",
+
+          "description": "The reference input files (specified as <reference_in>) are FASTA files (usually having extension .fa, .mfa, .fna or similar)."
+
+        },
+
+        {
+
+          "name": "reference_in",
+
+          "type": "file[]",
+
+          "required": "true",
+
+          "description": "A comma-separated list of FASTA files containing the reference sequences to be aligned to, or, if -c is specified, the sequences themselves. E.g., <reference_in> might be chr1.fa,chr2.fa,chrX.fa,chrY.fa, or, if -c is specified, this might be GGTCATCCT,ACGGGTCGT,CCGTTCTATGCGGCTTA.",
+
+          "separator" : ","
+
+        },
+
+        {
+
+          "name": "bt2_base",
+
+          "type": "string[]",
+
+          "required": "true",
+
+          "description": "The basename of the index files to write. By default, bowtie2-build writes files named NAME.1.bt2, NAME.2.bt2, NAME.3.bt2, NAME.4.bt2, NAME.rev.1.bt2, and NAME.rev.2.bt2, where NAME is <bt2_base>.",
+
+          "separator" : ","
+
+        }
+
+      ],
+
+      "outputs": [
+
+        {
+
+          "name": "output",
+
+          "description": "",
+
+          "type": "file[]",
+
+          "value": "$bt2_base.*"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+}

@@ -1,0 +1,8 @@
+{
+	"name" : "DockerConfig",
+	"context" : "Docker",
+	"config" : {
+		"uri" : "simonalpha/ncbi-blast-docker",
+		"tag" : "latest"
+	}	
+}

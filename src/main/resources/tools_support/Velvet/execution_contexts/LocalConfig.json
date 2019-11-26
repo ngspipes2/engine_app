@@ -1,0 +1,9 @@
+{
+	"name" : "LocalConfig",
+	"context" : "Local",
+	"config" : {
+		"setup" : [
+			"echo ---Velvet---\nif ! which velveth ; then\n\techo - Installing Velvet\n\tsudo apt-get update -y\n\tsudo apt-get install -y velvet\nelse\n\techo - Velvet already installed\nfi"
+		]
+	}
+}

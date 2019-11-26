@@ -1,0 +1,297 @@
+{
+	"name" : "Velvet",
+	"author" : "Daniel Zerbino[1] , Ewan Birney",
+	"version" : "0.7.01",
+	"description" : "Velvet is an algorithm package that has been designed to deal with de novo genome assembly and short read sequencing alignments.",
+	"documentation" : [
+		"https://www.ebi.ac.uk/~zerbino/velvet/",
+		"https://www.ebi.ac.uk/~zerbino/velvet/Manual.pdf",
+		"http://seqanswers.com/wiki/Velvet",
+		"http://wiki.bioinformatics.ucdavis.edu/index.php/Illumina_assembly_using_velvet"
+	],
+	"commands" :[
+		{
+			"name" : "velveth",
+			"command" : "velveth",
+			"description" : "construct the dataset for the following program, velvetg, and indicate to the system what each sequence file represents.",
+			"recommended_mem": 12288,
+			"recommended_cpu" : 1,
+			"recommended_disk" : 1024,
+			"parameters" : [
+				{
+					"name" : "outputDirectory",
+					"type" : "string",
+					"required" : true,
+					"description" : "Directory where will be output files. Created if necessary."
+				}, {
+					"name" : "strandSpecific",
+					"type" : "string",
+					"required" : false,
+					"description" : "Strand specific sequencing"
+				}, {
+					"name" : "m,M,s",
+					"type" : "string",
+					"required" : false,
+					"description" : "Multiple k-mers: m ≤ k < M with a step of s"
+				}, {
+					"name" : "noHash",
+					"type" : "string",
+					"required" : false,
+					"description" : " Preprocessing the Sequences file"
+				}, {
+					"name" : "reuseSequences",
+					"type" : "string",
+					"required" : false,
+					"description" : " Preprocessing the Sequences file"
+				}, {
+					"name" : "createBinary",
+					"type" : "string",
+					"required" : false,
+					"description" : "Using the binary version of Sequences"
+				}, {
+					"name" : "hashLength",
+					"type" : "int",
+					"required" : true,
+					"description" : "Also known as k-mer length, corresponds to the length, in base pairs, of the words being hashed"
+				}, {
+					"name" : "fileFormat",
+					"type" : "string",
+					"required" : false,
+					"description" : "Allows you to write as many filenames as you wish without having to re-type identical descriptors",
+					"prefix" : "-"
+				}, {
+					"name" : "readType",
+					"type" : "string",
+					"required" : false,
+					"description" : "Read type"
+				}, {
+					"name" : "filename",
+					"type" : "file",
+					"required" : false,
+					"description" : "Name of file to analyse"
+				}
+			],
+			"outputs" : [
+				{
+					"name" : "outDir",
+					"description" : "",
+					"type" : "directory",
+					"value" : "$outputDirectory"
+				},
+				{
+					"name" : "sequence",
+					"description" : "",
+					"type" : "file",
+					"value" : "$outputDirectory/Sequences"
+				}, {
+					"name" : "roadmaps",
+					"description" : "",
+					"type" : "file",
+					"value" : "$outputDirectory/Roadmaps"
+				}, {
+					"name" : "log",
+					"description" : "",
+					"type" : "file",
+					"value" : "$outputDirectory/Log"
+				}
+			]
+		},
+
+		{
+			"name" : "velvetg",
+			"command" : "velvetg",
+			"description" : "Build the Brujin graph and then manipulate it.",
+			"recommended_mem": 12288,
+			"recommended_cpu" : 1,
+			"recommended_disk" : 1024,
+			"parameters" : [
+				{
+					"name" : "outputDirectory",
+					"type" : "directory",
+					"required" : true,
+					"description" : "Directory where will be output files"
+				}, {
+					"name" : "covCutoff",
+					"type" : "double",
+					"required" : false,
+					"description" : "removal of low coverage nodes AFTER tour bus or allow the system to infer it (default: no removal)",
+					"prefix" : "-cov_cutoff "
+				}, {
+					"name" : "minContigLength",
+					"type" : "int",
+					"required" : false,
+					"description" : "minimum contig length exported to contigs.fa file (default: hash length * 2)"
+				}, {
+					"name" : "maxCoverage",
+					"type" : "double",
+					"required" : false,
+					"description" : "removal of high coverage nodes AFTER tour bus (default: no removal)"
+				}, {
+					"name" : "expCov",
+					"type" : "double",
+					"required" : false,
+					"description" : "expected coverage of unique regions or allow the system to infer it (default: no long or paired-end read resolution)"
+				}, {
+					"name" : "insLength",
+					"type" : "int",
+					"required" : false,
+					"description" : "expected distance between two paired-end reads in the respective short-read dataset (default: no read pairing)"
+				}, {
+					"name" : "shortMatePaired",
+					"type" : "string",
+					"required" : false,
+					"description" : "for mate-pair libraries, indicate that the library might be contaminated with paired-end reads (default no)"
+				}, {
+					"name" : "insLengthLong",
+					"type" : "int",
+					"required" : false,
+					"description" : "expected distance between two long paired-end reads (default: no read pairing)"
+				}, {
+					"name" : "scaffolding",
+					"type" : "string",
+					"required" : false,
+					"description" : "scaffolding of contigs used paired end information (default: on)"
+				}, {
+					"name" : "insLengthLongSd",
+					"type" : "int",
+					"required" : false,
+					"description" : "est. standard deviation of respective dataset (default: 10% of corresponding length)"
+				}, {
+					"name" : "insLengthSd",
+					"type" : "int",
+					"required" : false,
+					"description" : "est. standard deviation of respective dataset (default: 10% of corresponding length)"
+				}, {
+					"name" : "insLength2Sd",
+					"type" : "int",
+					"required" : false,
+					"description" : "est. standard deviation of respective dataset (default: 10% of corresponding length)"
+				}, {
+					"name" : "insLength2",
+					"type" : "int",
+					"required" : false,
+					"description" : "expected distance between two paired-end reads in the respective short-read dataset (default: no read pairing)"
+				}, {
+					"name" : "readTrkg",
+					"type" : "string",
+					"required" : false,
+					"description" : "tracking of short read positions in assembly (default: no tracking)"
+				}, {
+					"name" : "amosFile",
+					"type" : "string",
+					"required" : false,
+					"description" : "export assembly to AMOS file (default: no export)"
+				}, {
+					"name" : "amosFile",
+					"type" : "string",
+					"required" : false,
+					"description" : "export assembly to AMOS file (default: no export)"
+				}, {
+					"name" : "unusedReads",
+					"type" : "string",
+					"required" : false,
+					"description" : "export unused reads in UnusedReads.fa file (default: no)"
+				}, {
+					"name" : "maxBranchLength",
+					"type" : "int",
+					"required" : false,
+					"description" : "maximum length in base pair of bubble (default: 100)"
+				}, {
+					"name" : "maxDivergence",
+					"type" : "double",
+					"required" : false,
+					"description" : "maximum divergence rate between two branches in a bubble (default: 0.2)"
+				}, {
+					"name" : "maxGapCount",
+					"type" : "int",
+					"required" : false,
+					"description" : "maximum number of gaps allowed in the alignment of the two branches of a bubble (default: 3)"
+				}, {
+					"name" : "minPairCount",
+					"type" : "int",
+					"required" : false,
+					"description" : "minimum number of paired end connections to justify the scaffolding of two long contigs (default: 5)"
+				}, {
+					"name" : "longCovCutoff",
+					"type" : "double",
+					"required" : false,
+					"description" : "removal of nodes with low long-read coverage AFTER tour bus(default: no removal)"
+				}, {
+					"name" : "coverageMask",
+					"type" : "int",
+					"required" : false,
+					"description" : "minimum coverage required for confident regions of contigs (default: 1)"
+				}, {
+					"name" : "longMultCutoff",
+					"type" : "int",
+					"required" : false,
+					"description" : "minimum number of long reads required to merge contigs (default: 2)"
+				}, {
+					"name" : "alignments",
+					"type" : "string",
+					"required" : false,
+					"description" : "export a summary of contig alignment to the reference sequences (default: no)"
+				}, {
+					"name" : "exportFiltered",
+					"type" : "string",
+					"required" : false,
+					"description" : "export the long nodes which were eliminated by the coverage filters (default: no)"
+				}, {
+					"name" : "clean",
+					"type" : "string",
+					"required" : false,
+					"description" : "remove all the intermediary files which are useless for recalculation (default : no)"
+				}, {
+					"name" : "veryClean",
+					"type" : "string",
+					"required" : false,
+					"description" : "remove all the intermediary files (no recalculation possible) (default: no)"
+				}, {
+					"name" : "pairedExpFraction",
+					"type" : "double",
+					"required" : false,
+					"description" : "remove all the paired end connections which less than the specified fraction of the expected count (default: 0.1)"
+				}, {
+					"name" : "conserveLong",
+					"type" : "string",
+					"required" : false,
+					"description" : "preserve sequences with long reads in them (default no)"
+				}
+			],
+				"outputs" : [
+					{
+						"name" : "stats",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/stats.txt"
+					}, {
+						"name" : "preGraph",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/PreGraph"
+						
+					}, {
+						"name" : "lastGraph",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/LastGraph"
+					}, {
+						"name" : "graph",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/Graph"
+					}, {
+						"name" : "contigsFa",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/contigs.fa"
+					}, {
+						"name" : "log",
+						"description" : "",
+						"type" : "file",
+						"value" : "$outputDirectory/Log"
+					}
+				]
+		}
+	]
+}

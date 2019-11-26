@@ -1,0 +1,9 @@
+{
+	"name" : "LocalConfig",
+	"context" : "Local",
+	"config" : {
+		"setup" : [
+			"echo ---Blast---\n\nif ! which blastx ; then\n\techo - Installing Blast\n\tsudo apt-get update -y\n\tsudo apt-get install -y ncbi-blast+\nelse\n\techo - Blast already installed\nfi"
+		]
+	}
+}

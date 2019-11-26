@@ -1,0 +1,37 @@
+Properties: {
+    author: "NGSPipes Team"
+    description: "Study case 1"
+    version:  "1.0"
+    documentation: ["http://ngspipes.readthedocs.io/en/latest/RunningExamples.html"]
+}
+
+Repositories: [
+    ToolRepository repo: {
+        location: "C:\Users\caf\source\repos\NGSPipes\engine_app\src\main\resources\tools_support"
+    }
+]
+
+Outputs: {
+   contigs: velvetg[contigsFa]
+}
+
+Steps: [
+    Step velveth: {
+        exec: repo[Velvet][velveth]
+        execution_context: "DockerConfig"
+        inputs: {
+            outputDirectory: params.velvet_output_dir
+            hashLength: 21
+            fileFormat: "fastq"
+            filename: params.trimmomatic_output
+        }
+    }
+    Step velvetg: {
+        exec: repo[Velvet][velvetg]
+        execution_context: "DockerConfig"
+        inputs: {
+            outputDirectory: velveth[outDir]
+            covCutoff: 5
+        }
+    }
+]

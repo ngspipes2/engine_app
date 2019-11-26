@@ -1,0 +1,43 @@
+{
+  "name": "Cat",
+  "author": "",
+  "version": "",
+  "description": "cat is one of the most frequently used commands on Unix-like operating systems. It has three related functions with regard to text files: displaying them, combining copies of them and creating new ones.",
+  "documentation": [
+    "http://man7.org/linux/man-pages/man1/cat.1.html"
+  ],
+  "commands": [
+    {
+      "name": "cat",
+      "command": "cat",
+      "description": "Cat multiple files to one",
+      "recommended_mem": 2048,
+      "recommended_cpu" : 1,
+      "recommended_disk" : 1024,
+      "parameters": [
+        {
+          "name": "inFile",
+          "type": "file[]",
+          "required": "true",
+          "description": "",
+          "separator" : ",",
+          "suffix" : " > "
+		    },
+        {
+          "name": "outName",
+          "type": "string",
+          "required": "true",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "description": "",
+          "type": "file",
+          "value": "$out_name"
+        }
+      ]
+    }
+  ]
+}

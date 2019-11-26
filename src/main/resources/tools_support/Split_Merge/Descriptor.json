@@ -1,0 +1,150 @@
+{
+  "name": "Split_Merge",
+  "author": "NGSPipes",
+  "version": "0.1",
+  "description": "Split file by lines and merge multiple files.",
+  "documentation": [],
+  "commands": [
+    {
+      "name": "split",
+      "command": "java -jar /file_split_merge.jar",
+      "description": "This command splits a file by lines resulting multiple files.",
+      "recommended_mem": 2048,
+      "recommended_cpu" : 2,
+      "recommended_disk" : 1024,
+      "parameters": [
+        {
+          "name": "path",
+          "type": "file",
+          "required": true,
+          "description": "Path of the input file.",
+          "prefix" : "-path "
+        }, {
+          "name": "skipLines",
+          "type": "int",
+          "required": false,
+          "description": "Indicates the number of lines to skip for split, by default .",
+          "prefix" : "-skipLines "
+        }, {
+          "name": "fileExtension",
+          "type": "string",
+          "required": true,
+          "description": "Extension to be assigned to the output(s) file(s) case split operation and for the inputs files case merge operation. Default same origin file extension.",
+          "prefix" : "-fileExtension "
+        }, {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "This command type must be always is split.",
+          "prefix" : "-type "
+        }, {
+          "name": "filePrefix",
+          "type": "string",
+          "required": false,
+          "description": "A prefix to put on the output(s) file(s) name. Default iteration number for split or merged for merge.",
+          "prefix" : "-filePrefix "
+        }
+      ],
+      "outputs": [
+        {
+          "name": "outputs",
+          "description": "",
+          "type" : "string",
+          "value": "$filePrefix*$fileExtension"
+        }, 
+        {
+          "name": "outputsFiles",
+          "description": "",
+          "type" : "file[]",
+          "value": "$outputs"
+        }
+      ]
+    }, 
+    {
+      "name": "merge",
+      "command": "java -jar /file_split_merge.jar",
+      "description": "This command merge multiple files into one.",
+      "recommended_mem": 2048,
+      "recommended_cpu" : 2,
+      "recommended_disk" : 1024,
+      "parameters": [
+        {
+          "name": "path",
+          "type": "file",
+          "required": true,
+          "description": "Path of the folder which contain inputs files.",
+          "prefix" : "-path"
+        }, {
+          "name": "fileExtension",
+          "type": "string",
+          "required": true,
+          "description": "Extension to be assigned to the output(s) file(s) case split operation and for the inputs files case merge operation. Default same origin file extension.",
+          "prefix" : "-fileExtension "
+        }, {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "This command type must be always is merge.",
+          "prefix" : "-type "
+        }, {
+          "name": "filePrefix",
+          "type": "string",
+          "required": true,
+          "description": "A prefix to put on the output(s) file(s) name. Default iteration number for split or merged for merge.",
+          "prefix" : "-filePrefix "
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "description": "",
+          "type" : "file",
+          "value": "$filePrefix$fileExtension"
+        }
+      ]
+    }, 
+    {
+      "name": "mergeFiles",
+      "command": "java -jar /file_split_merge.jar",
+      "description": "This command merge multiple files into one.",
+      "recommended_mem": 2048,
+      "recommended_cpu" : 2,
+      "recommended_disk" : 1024,
+      "parameters": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "Path of the folder which contain inputs files.",
+          "prefix" : "-files "
+        }, {
+          "name": "fileExtension",
+          "type": "string",
+          "required": true,
+          "description": "Extension to be assigned to the output(s) file(s) case split operation and for the inputs files case merge operation. Default same origin file extension.",
+          "prefix" : "-fileExtension "
+        }, {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "This command type must be always is merge.",
+          "prefix" : "-type "
+        }, {
+          "name": "filePrefix",
+          "type": "string",
+          "required": true,
+          "description": "A prefix to put on the output(s) file(s) name. Default iteration number for split or merged for merge.",
+          "prefix" : "-filePrefix "
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "description": "",
+          "type" : "file",
+          "value": "$filePrefix$fileExtension"
+        }
+      ]
+    }
+  ]
+}

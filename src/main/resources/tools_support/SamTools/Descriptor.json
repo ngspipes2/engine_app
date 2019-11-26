@@ -1,0 +1,267 @@
+{
+  "name": "Trimmomatic",
+  "author": "UNKNOWN",
+  "version": "0.0.33",
+  "description": "It works with FASTQ (using phred + 33 or phred + 64 quality scores, depending on the Illumina pipeline used), either uncompressed or gzipp'ed FASTQ. Use of gzip format is determined based on the .gz extension. For single-ended data, one input and one output file are specified, plus the processing steps. For paired-end data, two input files are specified, and 4 output files, 2 for the paired output where both reads survived the processing, and 2 for corresponding unpaired output where a read survived, but the partner read did not.",
+  "documentation": [
+    "http://www.usadellab.org/cms/?page=trimmomatic",
+    "http://bioinformatics.oxfordjournals.org/content/early/2014/04/01/bioinformatics.btu170"
+  ],
+  "commands": [
+    {
+      "name": "trimmomatic",
+      "command": "java -jar /trimmomatic-0.33.jarh",
+      "description": "It works with FASTQ (using phred + 33 or phred + 64 quality scores, depending on the Illumina pipeline used), either uncompressed or gzipp'ed FASTQ. Use of gzip format is determined based on the .gz extension. For single-ended data, one input and one output file are specified, plus the processing steps. For paired-end data, two input files are specified, and 4 output files, 2 for the paired output where both reads survived the processing, and 2 for corresponding unpaired output where a read survived, but the partner read did not.",
+      "recommended_mem": 1024,
+      "recommended_cpu" : 1,
+      "recommended_disk" : 1024,
+      "parameters": [
+        {
+          "name": "mode",
+          "type": "enum",
+          "required": true,
+          "description": "For single-ended data, one input and one output file are specified, plus the processing steps. For paired-end data, two input files are specified, and 4 output files, 2 for the 'paired' output where both reads survived the processing, and 2 for corresponding 'unpaired' output where a read survived, but the partner read did not.",
+          "values" : ["SE", "PE", "org.usadellab.trimmomatic.TrimmomaticSE", "org.usadellab.trimmomatic.TrimmomaticPE"]
+        }, {
+          "name": "threads",
+          "type": "int",
+          "required": false,
+          "description": "indicates the number of threads to use, which improves performance on multi-core computers. If not specified, it will be chosen automatically",
+          "prefix" : "-threads"
+        }, {
+          "name": "quality",
+          "type": "string",
+          "required": true,
+          "description": "phred + 33 or phred + 64 quality scores"
+        }, {
+          "name": "trimlog",
+          "type": "string",
+          "required": false,
+          "description": "specifies the path to the log file. Log file contains info as : \n-the read name\n-the surviving sequence length\n-the location of the first surviving base, aka. the amount trimmed from the start\n-the location of the last surviving base in the original read-\nthe amount trimmed from the end",
+          "prefix" : "-trimlog"
+        }, {
+          "name": "inputFile1",
+          "type" : "file",
+          "required": true,
+          "description": "Specifies the path to the fastq input file.",
+          "depends" : "$mode",
+          "dependent_values" : ["SE", "org.usadellab.trimmomatic.TrimmomaticSE"]
+        }, {
+          "name": "basein",
+          "type": "flag",
+          "required": true,
+          "description": "Specifies the path to the fastq input file.",
+          "prefix" : "-basein",
+          "depends" : "$mode",
+          "dependent_values" : ["PE", "org.usadellab.trimmomatic.TrimmomaticPE"]
+        }, {
+          "name": "pairedInput1",
+          "type" : "file",
+          "required": true,
+          "description": "Specifies the path to the input file 1 of paired mode.",
+          "depends" : "$basein"
+        }, {
+          "name": "pairedInput2",
+          "type" : "file",
+          "required": false,
+          "description": "Specifies the path to the input file 2 of paired mode.",
+          "depends" : "$pairedInput1"
+        }, {
+          "name": "baseout",
+          "type": "flag",
+          "required": true,
+          "description": "Specifies the path to the fastq input file.",
+          "prefix" : "-baseout",
+          "depends" : "$mode",
+          "dependent_values" : ["PE", "org.usadellab.trimmomatic.TrimmomaticPE"]
+        }, {
+          "name": "output",
+          "type": "string",
+          "required": true,
+          "description": "Specifies the name of output file.",
+          "depends" : "$mode",
+          "dependent_values" : ["SE", "org.usadellab.trimmomatic.TrimmomaticSE"]
+        }, {
+          "name": "pairedOutput1",
+          "type": "string",
+          "required": true,
+          "description": "Specifies the name of paired output file 1.",
+          "depends" : "$baseout"
+        }, {
+          "name": "unpairedOutput1",
+          "type": "string",
+          "required": false,
+          "description": "Specifies the name of unpaired output file 1.",
+          "depends" : "$baseout"
+        }, {
+          "name": "pairedOutput2",
+          "type": "string",
+          "required": false,
+          "description": "Specifies the name of paired output file 2.",
+          "depends" : "$baseout"
+        }, {
+          "name": "unpairedOutput2",
+          "type": "string",
+          "required": false,
+          "description": "Specifies the name of unpaired output file 2.",
+          "depends" : "$baseout"
+        }, {
+	"name" : "ILLUMINA_CLIP",
+	"type" : "composed",
+	"required" : false,
+	"description" : "This step is used to find and remove Illumina adapters.",
+	"prefix" : "ILLUMINA_CLIP:",
+	"separator" : ":",
+	"sub_parameters": [
+            {
+              "name": "fastaWithAdaptersEtc",
+              "type" : "file",
+              "required": true,
+              "description": "Specifies the path to a fasta file containing all the adapters, PCR sequences etc. The naming of the various sequences within this file determines how they are used."
+            }, {
+              "name": "seedMismatches",
+              "type": "int",
+              "required": true,
+              "description": "Specifies the maximum mismatch count which will still allow a full match to be performed."
+            }, {
+              "name": "palindromeClipThreshold",
+              "type": "int",
+              "required": true,
+              "description": "Specifies how accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment."
+            },
+            {
+              "name": "simpleClipThreshold",
+              "type": "int",
+              "required": true,
+              "description": "Specifies how accurate the match between any adapter etc. sequence must be against a read."
+            },{
+              "name": "minAdapterLength",
+              "type": "int",
+              "required": false,
+              "description": "In addition to the alignment score, palindrome mode can verify that a minimum length of adapter has been detected. If unspecified, this defaults to 8 bases, for historical reasons. However, since palindrome mode has a very low false positive rate, this can be safely reduced, even down to 1, to allow shorter adapter fragments to be removed."
+            },{
+              "name": "keepBothReads",
+              "type": "boolean",
+              "required": false,
+              "description": "After read-though has been detected by palindrome mode, and the adapter sequence removed, the reverse read contains the same sequence information as the forward read, albeit in reverse complement. For this reason, the default behaviour is to entirely drop the reverse read. By specifying „true‟ for this parameter, the reverse read will also be retained, which may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads."
+            }
+          ]
+        }, {
+					"name" : "SLIDINGWINDOW",
+					"type" : "composed",
+					"required" : false,
+          "description" : "Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold. By considering multiple bases, a single poor quality base will not cause the removal of high quality data later in the read. ",
+          "prefix" : "SLIDINGWINDOW:",
+					"separator" : ":",
+					"sub_parameters": [
+            {
+              "name": "windowSize",
+              "type": "int",
+              "required": true,
+              "description": "Specifies the number of bases to average across."
+            }, {
+              "name": "requiredQuality",
+              "type": "int",
+              "required": true,
+              "description": "Specifies the average quality required."
+            }
+          ]
+        }, {
+					"name" : "MAXINFO",
+					"type" : "composed",
+					"required" : false,
+          "description" : "Performs an adaptive quality trim, balancing the benefits of retaining longer reads against the costs of retaining bases with errors.",
+          "prefix" : "MAXINFO:",
+					"separator" : ":",
+					"sub_parameters": [
+            {
+              "name": "targetLength",
+              "type": "int",
+              "required": true,
+              "description": "This specifies the read length which is likely to allow the location of the read within the target sequence to be determined."
+            }, {
+              "name": "strictness",
+              "type": "float",
+              "required": true,
+              "description": "This value, which should be set between 0 and 1, specifies the balance between preserving as much read length as possible vs. removal of incorrect bases. A low value of this parameter (<0.2) favours longer reads, while a high value (>0.8) favours read correctness."
+            }
+          ]
+        }, {
+          "name": "leadingQuality",
+          "type": "int",
+          "required": false,
+          "description": "Specifies the minimum quality required to keep a base.",
+          "prefix": "LEADING:"
+        }, {
+          "name": "trailingQuality",
+          "type": "int",
+          "required": false,
+          "description": "Specifies the minimum quality required to keep a base.",
+          "prefix": "TRAILING:"
+        }, {
+          "name": "cropLength",
+          "type": "int",
+          "required": false,
+          "description": "The number of bases to keep, from the start of the read.",
+          "prefix": "CROP:"
+        }, {
+          "name": "headcropLength",
+          "type": "int",
+          "required": false,
+          "description": "The number of bases to remove from the start of the read.",
+          "prefix": "HEADCROP:"
+        }, {
+          "name": "minlenLength",
+          "type": "int",
+          "required": false,
+          "description": "Specifies the minimum length of reads to be kept.",
+          "prefix": "MINLEN:"
+        }, {
+          "name": "topHred33",
+          "type": "flag",
+          "required": false,
+          "description": "Specifies the minimum length of reads to be kept.",
+          "prefix": "TOPHRED33"
+        }, {
+          "name": "topHred64",
+          "type": "flag",
+          "required": false,
+          "description": "Specifies the minimum length of reads to be kept.",
+          "prefix": "TOPHRED64"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "outputFile",
+          "description": "",
+          "type" : "file",
+          "value": "$output"
+        },
+        {
+          "name": "pairedOutputFile1",
+          "description": "",
+          "type" : "file",
+          "value": "$pairedOutput1"
+        },
+        {
+          "name": "UnpairedOutputFile1",
+          "description": "",
+          "type" : "file",
+          "value": "$unpairedOutput1"
+        },
+        {
+          "name": "pairedOutputFile2",
+          "description": "",
+          "type" : "file",
+          "value": "$pairedOutput2"
+        },
+        {
+          "name": "UnpairedOutputFile2",
+          "description": "",
+          "type" : "file",
+          "value": "$unpairedOutput2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+	"name" : "DockerConfig",
+	"context" : "Docker",
+	"config" : {
+		"uri" : "ngspipes/velvet0.7"
+	}
+}

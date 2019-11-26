@@ -1,0 +1,8 @@
+{
+	"name" : "DockerConfig",
+	"context" : "Docker",
+	"config" : {
+		"uri" : "ngspipes/split_merge",
+		"tag" : "latest"
+	}
+}
